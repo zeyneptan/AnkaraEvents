@@ -1,0 +1,131 @@
+﻿<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="..." crossorigin="anonymous" />
+
+
+<a href="@Url.Action("Login", "Account")" class="logout-btn"><i class="fas fa-sign-out-alt"></i>Log Out</a>
+
+<form asp-controller="Admin" asp-action="EventList" method="get">
+    <select name="category" id="category" style="border-radius: 15px; border: 1px solid #ccc; padding: 8px; background-color: #f5f5f5; color: #444;">
+        <option value="">Filter by Category</option>
+        <option value="">All</option>
+        <option value="Cinema">Cinema</option>
+        <option value="Theatre">Theatre</option>
+        <option value="Concert">Concert</option>
+    </select>
+    <button type="submit"  style="border-radius: 15px; border:none; padding: 8px 15px; background-color: #C29443; color: #fff;">Filter</button
+</form>
+
+<a href="@Url.Action("CreateEvent", "Admin")" class="create-event-btn">Create an Event</a>
+
+
+<div class="row event-list">
+    @if (Model != null && Model.Count > 0)
+    {
+         @foreach (var eventItem in Model)
+        {
+            <div class="col-md-3">
+                <div class="event-item">
+                 
+
+                    <d class="button-group">
+    <a href="@Url.Action("EditEvent", "Admin", new { id = eventItem.Id })" class="btn" style="margin-top:5px" >
+
+        <i class="fas fa-edit"></i>
+    </a>
+    <a href="@Url.Action("DeleteEvent", "Admin", new { id = eventItem.Id })"  class="btn" style="margin-top:5px">
+       
+<i class="fa-solid fa-trash"></i>
+    </a>
+</d
+            
+             
+                    <h4>@eventItem.Name</h4>
+                    <p><strong>Date:</strong> @eventItem.Date.ToShortDateString()</p>
+                    <p><strong>Time:</strong> @eventItem.Time.ToString(@"hh\:mm")</p>
+                    <p><strong>Venue:</strong> @eventItem.Venue</p>
+                    <p><strong>Details:</strong> @eventItem.Details</p>
+                    <p><strong>Category:</strong> @eventItem.Category</p>
+
+                     @if (!string.IsNullOrEmpty(eventItem.Tickets))
+        {
+
+        }
+                </div>
+            </div>
+        }
+
+    }
+    else
+    {
+        <p>No events found.</p>
+    }
+</div>
+
+    <style>
+
+.filter-form {
+    margin-bottom: 20px;
+}
+
+
+.event-list {
+    padding: 20px;
+    background-color: #f3f3f3;
+}
+
+.event-item {
+    position: relative;
+    border-radius: 20px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 15px;
+    background-color: #f3f3f3;
+     height: 600px;
+        
+}
+
+.button-group {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+}
+
+
+.btn {
+    margin-right: 5px;
+                background-color: #C29443;
+}
+
+.event-item h4,
+.event-item p {
+    color: #333; 
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background-color: #f3f3f3;
+}
+
+      .logout-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #C29443;
+            color: #fff;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+        }
+
+
+        .create-event-btn {
+
+    background-color: #C29443; 
+    color: #fff; 
+    padding: 8px 15px;
+    border-radius: 15px; 
+    text-decoration: none; 
+    display: inline-block;
+    right: 5px;
+
+}
+    </style>

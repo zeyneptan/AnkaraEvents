@@ -1,0 +1,25 @@
+﻿@model List<AnkaraEventsDeneme.Models.Event>
+
+<h2>Theatre Events</h2>
+
+<div class="row">
+    @if (Model != null && Model.Count > 0)
+    {
+        @foreach (var eventItem in Model)
+        {
+            <div class="col-md-3">
+                <div class="event-item" style="position: relative; border: 1px solid #ccc; padding: 10px; margin-bottom: 15px;">
+                    <h4>@eventItem.Name</h4>
+                    <p><strong>Date:</strong> @eventItem.Date.ToShortDateString()</p>
+                    <p><strong>Time:</strong> @eventItem.Time.ToString(@"hh\:mm")</p>
+                    <p><strong>Venue:</strong> @eventItem.Venue</p>
+                    <p><strong>Details:</strong> @eventItem.Details</p>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <p>No theatre events found.</p>
+    }
+</div>

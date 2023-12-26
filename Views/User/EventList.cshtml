@@ -1,0 +1,145 @@
+﻿<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="..." crossorigin="anonymous" />
+
+         <a href="@Url.Action("Login", "Account")" class="logout-btn"><i class="fas fa-sign-out-alt"></i>Log Out</a>
+
+<h2>Event List</h2>
+
+<form asp-controller="User" asp-action="EventList" method="get">
+    <select name="category" id="category" style="border-radius: 15px; border: 1px solid #ccc; padding: 8px; background-color: #f5f5f5; color: #444;">
+        <option value="">Filter by Category</option>
+        <option value="">All</option>
+        <option value="Cinema">Cinema</option>
+        <option value="Theatre">Theatre</option>
+        <option value="Concert">Concert</option>
+    </select>
+    <button type="submit" style="border-radius: 15px; padding: 8px 15px; background-color: #C29443; color: #fff;">Filter</button>
+</form>
+
+<div class="row">
+    @if (Model != null && Model.Count > 0)
+    {
+        @foreach (var eventItem in Model)
+        {
+            <div class="col-md-3">
+                <div class="event-item">
+
+                    <h4>@eventItem.Name</h4>
+                    <p><strong>Date:</strong> @eventItem.Date.ToShortDateString()</p>
+                    <p><strong>Time:</strong> @eventItem.Time.ToString(@"hh\:mm")</p>
+                    <p><strong>Venue:</strong> @eventItem.Venue</p>
+                    <p><strong>Details:</strong> @eventItem.Details</p>
+                    <p><strong>Category:</strong> @eventItem.Category</p>
+                    <p><strong>Tickets:</strong> <a href="@eventItem.Tickets" class="ticket-btn"><i class="fa-solid fa-ticket"></i> Buy a Ticket</a></p>
+
+
+                    <a href="@Url.Action("ToggleFavorite", "User", new { eventId = eventItem.Id })">
+                        @{
+                            var isFavorited = CheckIfEventIsFavoritedByUser(eventItem.Id);
+                        }
+                        @if (isFavorited)
+                        {
+                            <button type="button" class=" btn btn-warning"><i class="fa-solid fa-star"></i></button>
+                        }
+                        else
+                        {
+                            <button type="button" class="btn  btn-light"><i class="fa-regular fa-star"></i></button>
+                        }
+                    </a>
+
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <p>No events found.</p>
+    }
+</div>
+
+<style>
+
+    body {
+        background-color: #f5f5f5; 
+        font-family: Arial, sans-serif; 
+        color: #333; 
+    }
+
+    h2 {
+        color: #444;
+        margin-bottom: 20px;
+    }
+
+    form {
+        margin-bottom: 20px;
+    }
+
+    .event-item {
+        border-radius: 15px;
+        border: 1px solid #ccc;
+        padding: 15px;
+        margin-bottom: 20px;
+        background-color: #fff; 
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
+        height: 600px;
+           position: relative;
+
+    }
+
+    .btn {
+        margin-right: 5px;
+  
+       
+       
+         position: absolute; 
+         bottom:5px;
+    
+    }
+
+   
+
+
+
+    .favorite-events-section {
+        margin-top: 30px;
+    }
+
+    .favorite-events-section .event-item {
+        border-color: #ffcc00; 
+    }
+
+    .checked {
+        color: #ffcc00; 
+    }
+
+        .logout-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #C29443;
+            color: #fff;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+        }
+
+        
+          .ticket-btn {
+            background-color: #C29443;
+            color: #fff;
+            padding: 5px;
+            border: none;
+            border-radius: 5px;
+            width: 7px;
+        }
+    
+</style>
+
+@functions {
+    public bool CheckIfEventIsFavoritedByUser(int eventId)
+    {
+        using (var context = new AnkaraEventsDenemeContext())
+        {
+            return context.FavoriteEvents.Any(e => e.EventId == eventId);
+        }
+    }
+}
